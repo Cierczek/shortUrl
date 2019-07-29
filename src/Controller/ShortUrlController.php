@@ -29,7 +29,7 @@ class ShortUrlController extends AppController
      */
     public function index()
     {
-        $shortUrl = $this->paginate($this->ShortUrl, ['limit'=>10]);
+        $shortUrl = $this->paginate($this->ShortUrl, ['limit' => 10]);
 
         $this->set(compact('shortUrl'));
     }
@@ -44,22 +44,25 @@ class ShortUrlController extends AppController
     {
         $shortUrl = $this->ShortUrl->newEntity();
         if ($this->request->is('ajax')) {
+
             $shortUrl = $this->ShortUrl->patchEntity($shortUrl, $this->request->getData());
             $shortUrl->hash = md5($shortUrl->orginal_url);
             $shortUrl->short_url = Router::url('/', true) . 'check' . DS . $shortUrl->hash;
+
             if ($this->ShortUrl->save($shortUrl)) {
                 return $this->getResponse()->withType("application/json")->withStringBody(json_encode($data = ['message' => 'The short url has been saved.', 'shortUrl' => $shortUrl]));
             }
             return $this->getResponse()->withType("application/json")->withStringBody(json_encode($data = ['error' => 'The short url could not be saved. Please, try again.']));
         }
+
         $this->set(compact('shortUrl'));
 
     }
 
     /**
-     * Add method
+     * Check method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful Check
      */
     public function check($hash)
     {
@@ -71,7 +74,6 @@ class ShortUrlController extends AppController
         } else {
             return $this->redirect('/');
         }
-
 
     }
 
