@@ -2,7 +2,7 @@
 
 ## Installation
 
-###Install composer
+### Install composer
 
 1. Download project
 2. Go to project dir `cd /dirName/`.
